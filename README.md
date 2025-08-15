@@ -149,13 +149,9 @@ python-dotenv==1.0.1
 murf-ai==0.1.0
 ```
 
-# Install:
 
-```bash
-pip install -r requirements.txt
-```
 
----
+
 
 #  Testing the Voice Agent
 
