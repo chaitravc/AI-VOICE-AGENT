@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Voice Agent</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Main Wrapper -->
+  <div class="wrapper">
+    <!-- Heading -->
+    <h1> AI Voice Agent</h1>
+
+    <!-- Mic Button -->
+    <div class="mic-btn" id="record-btn">
+      <span class="mic-icon">🎙️</span>
+    </div>
+
+    <!-- Status -->
+    <p id="chat-status">Press the button to start recording</p>
+
+    <!-- Response Box -->
+    <div class="response-box">
+      <h2> Transcribed:</h2>
+      <p id="transcript-bubble">Waiting...</p>
+      <h2> Response:</h2>
+      <p id="response-bubble">Awaiting...</p>
+
+      <!-- Audio Player -->
+      <audio id="chat-audio" controls></audio>
+    </div>
+  </div>
+
+  <!-- Original JavaScript (unchanged) -->
+  <script>
+    function playFallbackAudio(message) {
+      const utterance = new SpeechSynthesisUtterance(message);
+      utterance.onerror = (event) => {
+        console.error('Speech synthesis error:', event.error);
+      };
+      window.speechSynthesis.speak(utterance);
+    }
+
+    // Generate or retrieve session ID
+    let sessionId = new URLSearchParams(window.location.search).get('session_id');
+    if (!sessionId) {
+      sessionId = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+      try { window.history.replaceState({}, '', `?session_id=${sessionId}`); }
+      catch { console.warn('History API unavailable'); }
+      localStorage.setItem('session_id', sessionId);
+    }
+
+    let mediaRecorder, audioChunks = [];
+    const recordBtn = document.getElementById("record-btn");
+    const chatStatus = document.getElementById("chat-status");
+    const transcriptBubble = document.getElementById("transcript-bubble");
+    const responseBubble = document.getElementById("response-bubble");
+    const chatAudio = document.getElementById("chat-audio");
+
+    chatAudio.onended = () => {
+      if (!recordBtn.classList.contains('recording')) startChatRecording();
+    };
+
+    async function startChatRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        chatStatus.textContent = " Recording...";
+        recordBtn.classList.add('recording');
+
+        mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+        mediaRecorder.onstop = sendChatAudio;
+
+        mediaRecorder.start();
+      } catch (err) {
+        console.error('Microphone Error:', err);
+        chatStatus.textContent = " Microphone access denied.";
+        playFallbackAudio("Microphone access denied or not supported.");
+      }
+    }
+
+    async function sendChatAudio() {
+      const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+      const formData = new FormData();
+      formData.append("file", audioBlob, `recorded_audio_${Date.now()}.webm`);
+
+      try {
+        chatStatus.textContent = " Processing...";
+        const response = await fetch(`/api/agent/chat/${sessionId}`, { method: 'POST', body: formData });
+        const result = await response.json();
+        if (!response.ok) {
+          chatStatus.textContent = result.fallback_message || " Trouble connecting.";
+          playFallbackAudio(result.fallback_message || "I'm having trouble connecting right now.");
+          return;
+        }
+        transcriptBubble.textContent = `${result.transcript}`;
+        responseBubble.textContent = `${result.llm_response}`;
+        chatAudio.src = result.audio_url;
+        chatAudio.play();
+        chatStatus.textContent = " Playing response...";
+      } catch (error) {
+        chatStatus.textContent = " Trouble connecting.";
+        playFallbackAudio("I'm having trouble connecting right now.");
+      }
+    }
+
+    recordBtn.addEventListener('click', () => {
+      recordBtn.classList.add("clicked");
+      setTimeout(() => recordBtn.classList.remove("clicked"), 200);
+
+      if (!recordBtn.classList.contains('recording')) {
+        startChatRecording();
+      } else {
+        if (mediaRecorder && mediaRecorder.state !== "inactive") {
+          mediaRecorder.stop();
+          recordBtn.classList.remove('recording');
+          chatStatus.textContent = " Processing audio...";
+        }
+      }
+    });
+  </script>
+</body>
+</html>

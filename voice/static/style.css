@@ -1,0 +1,112 @@
+/* =========================
+   Modern Glassmorphism Background
+   ========================= */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0b2a55, #133b73);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: white;
+}
+
+/* =========================
+   Wrapper / Center Content
+   ========================= */
+.wrapper {
+  text-align: center;
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+}
+
+/* =========================
+   Heading
+   ========================= */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #FFD700;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+}
+
+/* =========================
+   Mic Button
+   ========================= */
+.mic-btn {
+  width: 120px;
+  height: 120px;
+  background: rgba(255, 215, 0, 0.15);
+  border-radius: 50%;
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 30px auto;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.mic-btn:hover {
+  transform: scale(1.05);
+}
+
+.mic-icon {
+  font-size: 2.5rem;
+}
+
+/* Recording Animation */
+.mic-btn.recording {
+  animation: pulse 1.5s infinite;
+  background: rgba(255, 215, 0, 0.3);
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); }
+  70% { box-shadow: 0 0 0 25px rgba(255, 215, 0, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+/* =========================
+   Status Text
+   ========================= */
+#chat-status {
+  margin: 15px 0;
+  font-size: 1.1rem;
+}
+
+/* =========================
+   Response Box
+   ========================= */
+.response-box {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 20px;
+  border-radius: 15px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.15);
+  text-align: left;
+}
+
+.response-box h2 {
+  color: #FFD700;
+  margin-bottom: 5px;
+}
+
+.response-box p {
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+/* =========================
+   Audio Player
+   ========================= */
+audio {
+  margin-top: 10px;
+  width: 100%;
+  border-radius: 10px;
+  outline: none;
+}
