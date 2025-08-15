@@ -1,5 +1,5 @@
 ---
-```markdown
+
 #  AI Voice Agent
 
 An interactive **AI-powered voice agent** that converts user speech to text, processes it with a language model, and responds with natural-sounding speech.  
