@@ -1,4 +1,4 @@
----
+
 
 #  AI Voice Agent
 
@@ -7,7 +7,7 @@ Built with **FastAPI**, this project integrates third-party APIs for **speech-to
 
 ---
 
-##  Features
+#  Features
 
 - **Speech Recognition** – Transcribes spoken audio to text using **AssemblyAI**.
 - **Intelligent Responses** – Generates context-aware replies using **Google Gemini**.
@@ -18,7 +18,7 @@ Built with **FastAPI**, this project integrates third-party APIs for **speech-to
 
 ---
 
-##  Tech Stack
+#  Tech Stack
 
 **Frontend**  
 - HTML, CSS, JavaScript (Web Audio API, Fetch API)
@@ -38,7 +38,7 @@ Built with **FastAPI**, this project integrates third-party APIs for **speech-to
 
 ---
 
-##  Project Structure
+#  Project Structure
 
 ```
 
@@ -63,7 +63,7 @@ ai-voice-agent/
 
 ---
 
-##  How to Run
+#  How to Run
 
 ###  Clone the Repository
 ```bash
@@ -123,7 +123,7 @@ This serves `static/index.html`.
 
 ---
 
-##  API Endpoints
+#  API Endpoints
 
 | Method | Endpoint                       | Description                             |
 | ------ | ------------------------------ | --------------------------------------- |
@@ -137,7 +137,7 @@ This serves `static/index.html`.
 
 ---
 
-## Dependencies
+# Dependencies
 
 ```txt
 fastapi==0.115.0
@@ -149,7 +149,7 @@ python-dotenv==1.0.1
 murf-ai==0.1.0
 ```
 
-Install:
+# Install:
 
 ```bash
 pip install -r requirements.txt
@@ -157,7 +157,7 @@ pip install -r requirements.txt
 
 ---
 
-##  Testing the Voice Agent
+#  Testing the Voice Agent
 
 1. Open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser.
 2. Click 🎤, speak, and wait for AI to respond.
@@ -166,7 +166,7 @@ pip install -r requirements.txt
 
 ---
 
-## Notes
+# Notes
 
 * **Temporary Files** – Stored in `uploads/` and deleted after processing.
 * **Logging** – Uses Python’s logging module.
